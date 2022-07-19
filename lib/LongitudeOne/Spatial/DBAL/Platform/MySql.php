@@ -66,6 +66,10 @@ class MySql extends AbstractPlatform
             return 'GEOMETRY';
         }
 
-        return mb_strtoupper($fieldDeclaration['type']->getSQLType());
+        $type = mb_strtoupper($fieldDeclaration['type']->getSQLType());
+        if (isset($fieldDeclaration['srid']) && !empty($fieldDeclaration['srid'])) {
+            $type.= sprintf(' SRID %s', $fieldDeclaration['srid']);
+        }
+        return $type;
     }
 }
